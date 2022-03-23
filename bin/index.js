@@ -12,9 +12,9 @@ const options = yargs.usage("Usage: -n <project-name>").option("n", {
   demandOption: true,
 }).argv
 
-const originBasePath = "C:\\Home\\Document\\CS\\前端\\50-projects"
+const originBasePath = "C:\\Home\\Document\\CS\\Frontend\\50-projects"
 const targetBasePath =
-  "C:\\Home\\Document\\CS\\前端\\50-projects-in-react\\src\\components"
+  "C:\\Home\\Document\\CS\\Frontend\\50-projects-in-react\\src\\components"
 
 function generateProject(name) {
   const originPath = path.join(originBasePath, name)
@@ -26,5 +26,3 @@ function generateProject(name) {
 }
 
 generateProject(options.name)
-
-// const greeting = chalk.green.bold(`hello, ${options.name}!`)
