@@ -19,10 +19,33 @@ const targetBasePath =
 function generateProject(name) {
   const originPath = path.join(originBasePath, name)
   const targetPath = path.join(targetBasePath, name)
-  fs.cp(originPath, targetPath, { recursive: true }, function (err) {
-    if (err) throw err
-    console.log(chalk.green("create project sucess"))
-  })
+
+  fs.promises
+    .cp(originPath, targetPath, { recursive: true })
+    .then(() => {
+      // create style direcotry
+      const styleDir = path.resolve(targetPath, "style")
+      return fs.promises.mkdir(styleDir)
+    })
+    .then(() => {
+      // move style.css into style/index.css
+      const sytleFile = path.resolve(targetPath, "style.css")
+      const newStyleFile = path.resolve(targetPath, "style", "index.css")
+      return fs.promises.rename(sytleFile, newStyleFile)
+    })
+    .then(() => {
+      // move script.js into index.js
+      const jsFile = path.resolve(targetPath, "script.js")
+      const newJsFile = path.resolve(targetPath, "index.js")
+      return fs.promises.rename(jsFile, newJsFile)
+    })
+    .then(() => {
+      console.log(chalk.green(`create project ${targetPath} success!`))
+    })
+    .catch((err) => {
+      console.log(chalk.red(`Failed to create project ${targetPath}`))
+      console.log(err)
+    })
 }
 
 generateProject(options.name)
